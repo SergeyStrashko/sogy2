@@ -633,6 +633,27 @@ int getIndex(vector<string> &vector, string figure)
 	return -1;
 }
 
+bool canYouInsert(Table **list, char x, int y, Data node)
+{
+	Table *temp = *list;
+	string keys = "abcdefghi";
+	if (node.figure == "P")
+	{
+		while (temp)
+		{
+			if (temp->node.vertical == y 
+				&& ((temp->node.figure == "P" && temp->node.color == node.color) 
+					|| (node.color == "white" 
+					    && getFigure(*list, temp->node.vertical, keys[getIndex(x) + 1]) == "K"))
+					|| (node.color == "black" 
+					    && getFigure(*list, temp->node.vertical, keys[getIndex(x) - 1]) == "K"))
+				return false;
+			temp = temp->next;
+		}
+	}
+	else return false;
+}
+
 bool insertFigure(Table **list, vector<string> &reserve, Table &insert)
 {
 	Table *tempT = *list;
@@ -656,7 +677,8 @@ bool insertFigure(Table **list, vector<string> &reserve, Table &insert)
 		{
 			if (tempT->node.horizontal == insert.node.horizontal 
 			    && tempT->node.vertical == insert.node.vertical 
-			    && tempT->node.figure == " ")
+			    && tempT->node.figure == " "
+			    && canYouInsert(list, tempT->node.horizontal, tempT->node.vertical, insert.node))
 			{
 				tempT->node.figure = insert.node.figure;
 				tempT->node.color = insert.node.color;
