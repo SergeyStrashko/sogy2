@@ -775,8 +775,7 @@ int main()
 		default:
 			break;
 		}
-		if (player == 2) player--;
-		else player++;
+		player = (player == 2) ? 1 : 2;
 		system("cls");
 	}
 	return 0;
