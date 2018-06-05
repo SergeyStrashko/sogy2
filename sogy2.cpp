@@ -5,6 +5,23 @@
 
 using namespace std;
 
+extern string king = "K";
+extern string rook = "R";
+extern string bishop = "B";
+extern string goldG = "G";
+extern string silverG = "S";
+extern string lance = "L";
+extern string knight = "N";
+extern string pawn = "P";
+
+extern string white = "white";
+extern string black = "black";
+
+extern string keys = "abcdefghi";
+
+extern string space = " ";
+
+
 struct Data
 {
 	int vertical;
@@ -52,7 +69,6 @@ void Add_End(Table **list, Data &data)
 
 void Create_Table(Table **list)
 {
-	string keys = "abcdefghi";
 	Data data;
 	for (int i = 0; i < 9; i++)
 	{
@@ -60,8 +76,8 @@ void Create_Table(Table **list)
 		{
 			data.vertical = j;
 			data.horizontal = keys[i];
-			data.figure = " ";
-			data.color = " ";
+			data.figure = space;
+			data.color = space;
 			Add_End(list, data);
 		}
 	}
@@ -70,11 +86,10 @@ void Create_Table(Table **list)
 void Show_State(Table *list)
 {
 	Table *temp = list;
-	string keys = "abcdefghi";
 	cout << "\n       Game table:\n" << endl;
 	cout << "      ";
-	for (int i = 9; i > 0; i--) cout << " " << i << "  ";
-	cout << endl << endl;
+	for (int i = 9; i > 0; i--) cout << space << i << "  ";
+	cout << "\n\n";
 	int j = 0;
 	while (temp)
 	{
@@ -82,7 +97,7 @@ void Show_State(Table *list)
 		cout << "      ";
 		while (i < 9)
 		{
-			cout << " " << temp->node.figure << temp->node.color[0] << " ";
+			cout << space << temp->node.figure << temp->node.color[0] << space;
 			temp = temp->next;
 			i++;
 		}
@@ -97,15 +112,15 @@ void Add_One(Table *list, string figure, string color)
 	Table *temp = list;
 	int index;
 	char key;
-	if (figure == "K")
+	if (figure == king)
 	{
 		index = 5;
-		if (color == "white") key = 'a';
+		if (color == white) key = 'a';
 		else key = 'i';
 	}
-	else if (figure == "B")
+	else if (figure == bishop)
 	{
-		if (color == "white")
+		if (color == white)
 		{
 			key = 'b';
 			index = 2;
@@ -118,7 +133,7 @@ void Add_One(Table *list, string figure, string color)
 	}
 	else
 	{
-		if (color == "white")
+		if (color == white)
 		{
 			key = 'b';
 			index = 8;
@@ -149,23 +164,15 @@ void Add_Double(Table *list, string figure, string color)
 	Table *temp = list;
 	vector<int> index;
 	char key;
-	if (figure == "G")
-	{
+	if (figure == goldG)
 		index = { 4, 6 };
-	}
-	else if (figure == "S")
-	{
+	else if (figure == silverG)
 		index = { 7, 3 };
-	}
-	else if (figure == "N")
-	{
+	else if (figure == knight)
 		index = { 8, 2 };
-	}
 	else
-	{
 		index = { 9, 1 };
-	}
-	if (color == "white") key = 'a';
+	if (color == white) key = 'a';
 	else key = 'i';
 	while (temp) {
 		if (temp->node.horizontal == key)
@@ -186,7 +193,7 @@ void Add_P(Table *list, string color)
 {
 	Table *temp = list;
 	char key;
-	if (color == "white") key = 'c';
+	if (color == white) key = 'c';
 	else key = 'g';
 	while (temp)
 	{
@@ -194,7 +201,7 @@ void Add_P(Table *list, string color)
 		{
 			for (int i = 0; i < 9; i++)
 			{
-				temp->node.figure = "P";
+				temp->node.figure = pawn;
 				temp->node.color = color;
 				temp = temp->next;
 			}
@@ -207,27 +214,27 @@ void Add_P(Table *list, string color)
 
 void Fill_White(Table *list)
 {
-	string color = "white";
-	Add_One(list, "K", color);
-	Add_One(list, "B", color);
-	Add_One(list, "R", color);
-	Add_Double(list, "G", color);
-	Add_Double(list, "S", color);
-	Add_Double(list, "L", color);
-	Add_Double(list, "N", color);
+	string color = white;
+	Add_One(list, king, color);
+	Add_One(list, bishop, color);
+	Add_One(list, rook, color);
+	Add_Double(list, goldG, color);
+	Add_Double(list, silverG, color);
+	Add_Double(list, lance, color);
+	Add_Double(list, knight, color);
 	Add_P(list, color);
 }
 
 void Fill_Black(Table *list)
 {
-	string color = "black";
-	Add_One(list, "K", color);
-	Add_One(list, "R", color);
-	Add_One(list, "B", color);
-	Add_Double(list, "G", color);
-	Add_Double(list, "S", color);
-	Add_Double(list, "L", color);
-	Add_Double(list, "N", color);
+	string color = black;
+	Add_One(list, king, color);
+	Add_One(list, rook, color);
+	Add_One(list, bishop, color);
+	Add_Double(list, goldG, color);
+	Add_Double(list, silverG, color);
+	Add_Double(list, lance, color);
+	Add_Double(list, knight, color);
 	Add_P(list, color);
 }
 
@@ -238,8 +245,8 @@ void Delete(Table **list, char x, int y)
 	{
 		if (temp->node.horizontal == x && temp->node.vertical == y)
 		{
-			temp->node.figure = ' ';
-			temp->node.color = ' ';
+			temp->node.figure = space;
+			temp->node.color = space;
 			break;
 		}
 		temp = temp->next;
@@ -280,7 +287,6 @@ void Change(Table **list, Table *target, char target_x, int target_y)
 
 int getIndex(char value)
 {
-	string keys = "abcdefghi";
 	for (int i = 0; i < 9; i++)
 		if (keys[i] == value) return i;
 	return -1;
@@ -304,8 +310,8 @@ bool isClearVertical(Table *list, int vertical, char horizontalFirst, char horiz
 	{
 		if (temp->node.vertical == vertical)
 		{
-				if (getIndex(first) < getIndex(temp->node.horizontal) && getIndex(second) > getIndex(temp->node.horizontal) && temp->node.figure != " ")
-					return false;
+			if (getIndex(first) < getIndex(temp->node.horizontal) && getIndex(second) > getIndex(temp->node.horizontal) && temp->node.figure != space)
+				return false;
 		}
 		temp = temp->next;
 	}
@@ -320,7 +326,7 @@ string getFigure(Table *&list, int vertical, char horizontal)
 		if (temp->node.horizontal == horizontal && temp->node.vertical == vertical) return temp->node.figure;
 		temp = temp->next;
 	}
-	return " ";
+	return space;
 }
 
 bool isClearHorizontal(Table *list, char horizontal, int verticalFirst, int verticalSecond)
@@ -341,7 +347,7 @@ bool isClearHorizontal(Table *list, char horizontal, int verticalFirst, int vert
 	{
 		if (temp->node.horizontal == horizontal)
 		{
-			if (first < temp->node.vertical && second > temp->node.vertical && temp->node.figure != " ")
+			if (first < temp->node.vertical && second > temp->node.vertical && temp->node.figure != space)
 				return false;
 		}
 		temp = temp->next;
@@ -354,10 +360,10 @@ bool isYour(Table **list, int vertical, char horizontal, int player)
 {
 	Table *temp = new Table;
 	temp->node = Search(list, horizontal, vertical).node;
-	if (temp->node.figure != " ")
+	if (temp->node.figure != space)
 	{
-		if (player == 1 && temp->node.color == "white") return true;
-		else if (player == 2 && temp->node.color == "black") return true;
+		if (player == 1 && temp->node.color == white) return true;
+		else if (player == 2 && temp->node.color == black) return true;
 		else return false;
 	}
 	else return false;
@@ -365,60 +371,57 @@ bool isYour(Table **list, int vertical, char horizontal, int player)
 
 bool flag(Table *list, Table *start, char target_x, int target_y)
 {
-	string keys = "abcdefghi";
 	int index = getIndex(start->node.horizontal);
-	if (start->node.figure == "K")
+	if (start->node.figure == king)
 	{
 		if ((start->node.vertical == target_y 
 			|| start->node.vertical == (target_y - 1) 
 			|| start->node.vertical == (target_y + 1)) 
-			&& (start->node.horizontal == target_x || keys[index + 1] == target_x || keys[index - 1] == target_x))
+			&& (start->node.horizontal == target_x 
+			    || keys[index + 1] == target_x 
+			    || keys[index - 1] == target_x))
 			return true;
 		else return false;
 	}
-	else if (start->node.figure == "G" 
-		|| start->node.figure == "+P" 
-		|| start->node.figure == "+S" 
-		|| start->node.figure == "+N" 
-		|| start->node.figure == "+L")
+	else if (start->node.figure == goldG)
 	{
 		if (((start->node.vertical == target_y 
 			|| start->node.vertical == (target_y - 1) 
 			|| start->node.vertical == (target_y + 1)) 
 			&& (start->node.horizontal == target_x 
-				|| (start->node.color == "white" && keys[index + 1] == target_x) 
-				|| (start->node.color == "black" && keys[index - 1] == target_x))) 
-			|| (start->node.vertical == target_y && (start->node.color == "white" && keys[index - 1] == target_x) 
-				|| (start->node.color == "black" && keys[index + 1] == target_x)))
+				|| (start->node.color == white && keys[index + 1] == target_x) 
+				|| (start->node.color == black && keys[index - 1] == target_x))) 
+			|| (start->node.vertical == target_y && (start->node.color == white && keys[index - 1] == target_x) 
+				|| (start->node.color == black && keys[index + 1] == target_x)))
 			return true;
 		else return false;
 	}
-	else if (start->node.figure == "S")
+	else if (start->node.figure == silverG)
 	{
 		if (((start->node.vertical == target_y 
 			|| start->node.vertical == (target_y - 1) 
 			|| start->node.vertical == (target_y + 1)) 
-			&& ((start->node.color == "white" && keys[index + 1] == target_x) 
-				|| (start->node.color == "black" && keys[index - 1] == target_x))) 
+			&& ((start->node.color == white && keys[index + 1] == target_x) 
+				|| (start->node.color == black && keys[index - 1] == target_x))) 
 			|| ((start->node.vertical == target_y - 1 
 				|| start->node.vertical == target_y + 1) 
-				&& (start->node.color == "white" && keys[index - 1] == target_x) 
-				|| (start->node.color == "black" && keys[index + 1] == target_x)))
+				&& (start->node.color == white && keys[index - 1] == target_x) 
+				|| (start->node.color == black && keys[index + 1] == target_x)))
 			return true;
 		else return false;
 	}
-	else if (start->node.figure == "L")
+	else if (start->node.figure == lance)
 	{
 		if (start->node.vertical == target_y 
-			&& ((start->node.color == "white" 
+			&& ((start->node.color == white 
 				&& index < getIndex(target_x)) 
-				|| (start->node.color == "black" 
+				|| (start->node.color == black 
 					&& index > getIndex(target_x))) 
 			&& isClearVertical(list, start->node.vertical, start->node.horizontal, target_x))
 			return true;
 		else return false;
 	}
-	else if (start->node.figure == "R")
+	else if (start->node.figure == rook)
 	{
 		if ((start->node.vertical == target_y 
 			|| start->node.horizontal == target_x) 
@@ -427,26 +430,13 @@ bool flag(Table *list, Table *start, char target_x, int target_y)
 			return true;
 		else return false;
 	}
-	else if (start->node.figure == "+R")
-	{
-		if ((start->node.vertical == target_y 
-			|| start->node.horizontal == target_x) 
-			|| ((start->node.vertical == target_y 
-				|| start->node.vertical == (target_y - 1) 
-				|| start->node.vertical == (target_y + 1)) 
-				&& (start->node.horizontal == target_x 
-					|| keys[index + 1] == target_x 
-					|| keys[index - 1] == target_x)))
-			return true;
-		else return false;
-	}
-	else if (start->node.figure == "+B")
+	else if (start->node.figure == bishop)
 	{
 		if (start->node.vertical > target_y && getIndex(target_x) < index)
 			for (int i = start->node.vertical - 1; i >= target_y; i--)
 			{
 				index--;
-				if (getFigure(list, i, keys[index]) != " ")
+				if (getFigure(list, i, keys[index]) != space)
 					return false;
 				if (i == target_y && target_x == keys[index])
 					return true;
@@ -455,7 +445,7 @@ bool flag(Table *list, Table *start, char target_x, int target_y)
 			for (int i = start->node.vertical + 1; i <= target_y; i++)
 			{
 				index--;
-				if (getFigure(list, i, keys[index]) != " ")
+				if (getFigure(list, i, keys[index]) != space)
 					return false;
 				if (i == target_y && target_x == keys[index])
 					return true;
@@ -464,7 +454,7 @@ bool flag(Table *list, Table *start, char target_x, int target_y)
 			for (int i = start->node.vertical - 1; i >= target_y; i--)
 			{
 				index++;
-				if (getFigure(list, i, keys[index]) != " ")
+				if (getFigure(list, i, keys[index]) != space)
 					return false;
 				if (i == target_y && target_x == keys[index])
 					return true;
@@ -473,73 +463,30 @@ bool flag(Table *list, Table *start, char target_x, int target_y)
 			for (int i = start->node.vertical + 1; i <= target_y; i++)
 			{
 				index++;
-				if (getFigure(list, i, keys[index]) != " ")
-					return false;
-				if (i == target_y && target_x == keys[index])
-					return true;
-			}
-		if (((start->node.vertical + 1 == target_y || start->node.vertical - 1 == target_y) && start->node.horizontal == target_x) 
-			|| ((keys[index + 1] == target_x || keys[index - 1] == target_x) && start->node.vertical == target_y))
-			return true;
-		else return false;
-	}
-	else if (start->node.figure == "B")
-	{
-		if (start->node.vertical > target_y && getIndex(target_x) < index)
-			for (int i = start->node.vertical - 1; i >= target_y; i--)
-			{
-				index--;
-				if (getFigure(list, i, keys[index]) != " ")
-					return false;
-				if (i == target_y && target_x == keys[index])
-					return true;
-			}
-		else if (start->node.vertical < target_y && getIndex(target_x) < index)
-			for (int i = start->node.vertical + 1; i <= target_y; i++)
-			{
-				index--;
-				if (getFigure(list, i, keys[index]) != " ")
-					return false;
-				if (i == target_y && target_x == keys[index])
-					return true;
-			}
-		else if (start->node.vertical > target_y && getIndex(target_x) > index)
-			for (int i = start->node.vertical - 1; i >= target_y; i--)
-			{
-				index++;
-				if (getFigure(list, i, keys[index]) != " ")
-					return false;
-				if (i == target_y && target_x == keys[index])
-					return true;
-			}
-		else if (start->node.vertical < target_y && getIndex(target_x) > index)
-			for (int i = start->node.vertical + 1; i <= target_y; i++)
-			{
-				index++;
-				if (getFigure(list, i, keys[index]) != " ")
+				if (getFigure(list, i, keys[index]) != space)
 					return false;
 				if (i == target_y && target_x == keys[index])
 					return true;
 			}
 		else return false;
 	}
-	else if (start->node.figure == "N")
+	else if (start->node.figure == knight)
 	{
 		if ((start->node.vertical == target_y - 1 
 			|| start->node.vertical == target_y + 1) 
-			&& ((start->node.color == "white" 
+			&& ((start->node.color == white 
 				&& keys[index + 2] == target_x) 
-				|| (start->node.color == "black" 
+				|| (start->node.color == black 
 					&& keys[index - 2] == target_x)))
 			return true;
 		else return false;
 	}
-	else if (start->node.figure == "P")
+	else if (start->node.figure == pawn)
 	{ 
 		if (start->node.vertical == target_y 
-			&& ((start->node.color == "white" 
+			&& ((start->node.color == white 
 				&& keys[index + 1] == target_x) 
-				|| (start->node.color == "black" 
+				|| (start->node.color == black 
 					&& keys[index - 1] == target_x)))
 			return true;
 		else return false;
@@ -547,7 +494,7 @@ bool flag(Table *list, Table *start, char target_x, int target_y)
 	return false;
 }
 
-bool canYou(Table **list, int verticalFirst, char horizontalFirst, int verticalSecond, char horizontalSecond, int player)
+bool canYouMove(Table **list, int verticalFirst, char horizontalFirst, int verticalSecond, char horizontalSecond, int player)
 {
 	Table *start = new Table;
 	Table *target = new Table;
@@ -555,10 +502,10 @@ bool canYou(Table **list, int verticalFirst, char horizontalFirst, int verticalS
 	target->node = Search(list, horizontalSecond, verticalSecond).node;
 	if (flag(*list, start, horizontalSecond, verticalSecond))
 	{
-		if (target->node.figure == " ") return true ;
-		else if (player == 1 && target->node.color == "black")
+		if (target->node.figure == space) return true ;
+		else if (player == 1 && target->node.color == black)
 			return true;
-		else if (player == 2 && target->node.color == "white")
+		else if (player == 2 && target->node.color == white)
 			return true;
 		else return false;
 	}
@@ -579,7 +526,7 @@ void Move(Table **list, char start_x, int start_y, char target_x, int target_y)
 void showReserve(vector<string> &reserve)
 {
 	for(unsigned i = 0; i < reserve.size(); i++)
-		cout << reserve[i] << " ";
+		cout << reserve[i] << space;
 	cout << endl;
 }
 
@@ -601,7 +548,7 @@ bool hasKing(Table *&list, string color)
 	Table *temp = list;
 	while (temp)
 	{
-		if (temp->node.color == color && temp->node.figure == "K")
+		if (temp->node.color == color && temp->node.figure == king)
 			return true;
 		temp = temp->next;
 	}
@@ -610,12 +557,12 @@ bool hasKing(Table *&list, string color)
 
 bool isEnd(Table *&list)
 {
-	if (counter(list, "black") == 0 || !hasKing(list, "black"))
+	if (counter(list, black) == 0 || !hasKing(list, black))
 	{
 		cout << "Player 1 WIN!" << endl;
 		return true;
 	}
-	else if (counter(list, "white") == 0 || !hasKing(list, "white"))
+	else if (counter(list, white) == 0 || !hasKing(list, white))
 	{
 		cout << "Player 2 WIN!" << endl;
 		return true;
@@ -636,17 +583,16 @@ int getIndex(vector<string> &vector, string figure)
 bool canYouInsert(Table **list, char x, int y, Data node)
 {
 	Table *temp = *list;
-	string keys = "abcdefghi";
-	if (node.figure == "P")
+	if (node.figure == pawn)
 	{
 		while (temp)
 		{
 			if (temp->node.vertical == y 
-				&& ((temp->node.figure == "P" && temp->node.color == node.color) 
-					|| (node.color == "white" 
-					    && getFigure(*list, temp->node.vertical, keys[getIndex(x) + 1]) == "K"))
-					|| (node.color == "black" 
-					    && getFigure(*list, temp->node.vertical, keys[getIndex(x) - 1]) == "K"))
+				&& ((temp->node.figure == pawn && temp->node.color == node.color) 
+					|| (node.color == white 
+					    && getFigure(*list, temp->node.vertical, keys[getIndex(x) + 1]) == king))
+					|| (node.color == black 
+					    && getFigure(*list, temp->node.vertical, keys[getIndex(x) - 1]) == king))
 				return false;
 			temp = temp->next;
 		}
@@ -676,9 +622,9 @@ bool insertFigure(Table **list, vector<string> &reserve, Table &insert)
 		while (tempT)
 		{
 			if (tempT->node.horizontal == insert.node.horizontal 
-			    && tempT->node.vertical == insert.node.vertical 
-			    && tempT->node.figure == " "
-			    && canYouInsert(list, tempT->node.horizontal, tempT->node.vertical, insert.node))
+				&& tempT->node.vertical == insert.node.vertical 
+				&& tempT->node.figure == space
+				&& canYouInsert(list, tempT->node.horizontal, tempT->node.vertical, insert.node))
 			{
 				tempT->node.figure = insert.node.figure;
 				tempT->node.color = insert.node.color;
@@ -687,7 +633,6 @@ bool insertFigure(Table **list, vector<string> &reserve, Table &insert)
 			}
 			tempT = tempT->next;
 		}
-		cout << "       The place aren't empty\n";
 		return false;
 	}
 }
@@ -734,7 +679,7 @@ int main()
 				}
 				cout << "       To: ";
 				cin >> horizontal[1] >> vertical[1];
-				if (!canYou(&list, vertical[0], horizontal[0], vertical[1], horizontal[1], player))
+				if (!canYouMove(&list, vertical[0], horizontal[0], vertical[1], horizontal[1], player))
 				{
 					cout << "       It's imposible!\n";
 					attempt = true;
@@ -742,7 +687,7 @@ int main()
 				else attempt = false;
 			}
 			string temp = getFigure(list, vertical[1], horizontal[1]);
-			if (temp != " ")
+			if (temp != space)
 			{
 				if (player == 1) reserve1.push_back(temp);
 				else reserve2.push_back(temp);
@@ -760,12 +705,12 @@ int main()
 				cin >> temp->node.horizontal >> temp->node.vertical;
 				if (player == 1)
 				{
-					temp->node.color = "white";
+					temp->node.color = white;
 					attempt = !insertFigure(&list, reserve1, *temp);
 				}
 				else
 				{
-					temp->node.color = "black";
+					temp->node.color = black;
 					attempt = !insertFigure(&list, reserve2, *temp);
 				}
 				cout << endl;
@@ -780,3 +725,4 @@ int main()
 	}
 	return 0;
 }
+
