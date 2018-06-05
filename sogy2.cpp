@@ -310,7 +310,9 @@ bool isClearVertical(Table *list, int vertical, char horizontalFirst, char horiz
 	{
 		if (temp->node.vertical == vertical)
 		{
-			if (getIndex(first) < getIndex(temp->node.horizontal) && getIndex(second) > getIndex(temp->node.horizontal) && temp->node.figure != space)
+			if (getIndex(first) < getIndex(temp->node.horizontal) 
+			    && getIndex(second) > getIndex(temp->node.horizontal) 
+			    && temp->node.figure != space)
 				return false;
 		}
 		temp = temp->next;
